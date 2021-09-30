@@ -6,6 +6,7 @@ from django.db import models
 class ToDo(models.Model):
     text = models.CharField(max_length=150)
     done = models.BooleanField(default=False)
+    last_modified = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
 
     class Meta:
