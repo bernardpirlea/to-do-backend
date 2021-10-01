@@ -1,5 +1,6 @@
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
 from .serializers import ToDoSerializer
 from .models import ToDo
 
@@ -9,6 +10,7 @@ API Overview
 
 
 @api_view(['GET'])
+@permission_classes((IsAuthenticated,))
 def apiOverview(request):
     api_urls = {
         'List': '/task-list/',
@@ -20,6 +22,7 @@ def apiOverview(request):
     return Response(api_urls)
 
 
+@permission_classes((IsAuthenticated,))
 @api_view(['GET'])
 def todoList(request):
     todos = ToDo.objects.all()
@@ -27,6 +30,7 @@ def todoList(request):
     return Response(serializer.data)
 
 
+@permission_classes((IsAuthenticated,))
 @api_view(['POST'])
 def todoCreate(request):
     serializer = ToDoSerializer(data=request.data)
@@ -38,6 +42,7 @@ def todoCreate(request):
     return Response(serializer.data)
 
 
+@permission_classes((IsAuthenticated,))
 @api_view(['DELETE'])
 def todoDelete(request, pk):
     todo = ToDo.objects.get(id=pk)
@@ -45,6 +50,7 @@ def todoDelete(request, pk):
     return Response("To do has been deleted successfully.")
 
 
+@permission_classes((IsAuthenticated,))
 @api_view(['POST'])
 def todoUpdate(request, pk):
     todo = ToDo.objects.get(id=pk)
