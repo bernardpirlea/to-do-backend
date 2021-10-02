@@ -19,8 +19,6 @@ def apiOverview(request):
         'Update': '/task-update/<str:pk>/',
         'Delete': '/task-delete/<str:pk>/',
     }
-    print(request.user)
-    print(request.auth)
     return Response(api_urls)
 
 
@@ -35,7 +33,11 @@ def todoList(request):
 @api_view(['POST'])
 @permission_classes((IsAuthenticated,))
 def todoCreate(request):
-    serializer = ToDoSerializer(data=request.data)
+
+    user = request.user
+    todo = ToDo(owner=user)
+
+    serializer = ToDoSerializer(todo, data=request.data)
     if serializer.is_valid():
         serializer.save()
     else:
@@ -46,7 +48,10 @@ def todoCreate(request):
 @api_view(['DELETE'])
 @permission_classes((IsAuthenticated,))
 def todoDelete(request, pk):
+    user = request.user
     todo = ToDo.objects.get(id=pk)
+    if todo.owner != user:
+        return Response({"reponse": "You don't have the permission to delete the to do"})
     todo.delete()
     return Response("To do has been deleted successfully.")
 
@@ -54,7 +59,10 @@ def todoDelete(request, pk):
 @api_view(['POST'])
 @permission_classes((IsAuthenticated,))
 def todoUpdate(request, pk):
+    user = request.user
     todo = ToDo.objects.get(id=pk)
+    if todo.owner != user:
+        return Response({"reponse": "You don't have the permission to edit the to do"})
     serializer = ToDoSerializer(instance=todo, data=request.data)
     if serializer.is_valid():
         serializer.save()
