@@ -1,12 +1,23 @@
+from django.utils import tree
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
-from .serializers import ToDoSerializer
+from .serializers import ToDoSerializer, UserSerializer
 from .models import ToDo
 
 """
 API Overview
 """
+
+
+@api_view(['POST'])
+def register(request):
+    serializer = UserSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+    else:
+        print(serializer.errors)
+    return Response(serializer.data)
 
 
 @api_view(['GET'])

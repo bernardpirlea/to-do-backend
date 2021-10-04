@@ -4,7 +4,8 @@ from rest_framework.authtoken import views as auth_views
 
 urlpatterns = [
     path('', views.apiOverview, name='api-overview'),
-    path('token-auth/', auth_views.obtain_auth_token),
+    path('register/', views.register, name='api-register'),
+    path('token-auth/', auth_views.obtain_auth_token, name='api-login'),
     path('todo-list/', views.todoList, name='todo-list'),
     path('todo-create/', views.todoCreate, name="todo-Create"),
     path('todo-delete/<str:pk>', views.todoDelete, name="todo-Delete"),
