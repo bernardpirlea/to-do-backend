@@ -21,14 +21,12 @@ def register(request):
 
 
 @ api_view(['GET'])
-@ permission_classes((IsAuthenticated,))
 def apiOverview(request):
     api_urls = {
-        'List': '/task-list/',
-        'Detail View': '/task-detail/<str:pk>/',
-        'Create': '/task-create/',
-        'Update': '/task-update/<str:pk>/',
-        'Delete': '/task-delete/<str:pk>/',
+        'List': '/todo-list/',
+        'Create': '/todo-create/',
+        'Update': '/todo-update/<str:pk>/',
+        'Delete': '/todo-delete/<str:pk>/',
     }
     return Response(api_urls)
 
