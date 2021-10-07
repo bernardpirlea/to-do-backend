@@ -65,7 +65,7 @@ def todoDelete(request, pk):
     return Response("To do has been deleted successfully.")
 
 
-@ api_view(['POST'])
+@ api_view(['PUT'])
 @ permission_classes((IsAuthenticated,))
 def todoUpdate(request, pk):
     user = request.user
